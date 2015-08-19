@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing push notification</title>
+</head>
+<body>
+    <time></time>
+    <div class="container">Container div</div>
+
+    <script src="/js/socket.io.js"></script>
+    <!-- creating connection -->
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost:8080');
+
+        socket.on('notification', function (data) {
+            console.log('received push notification', data);
+        });
+    </script>
+</body>
+</html>

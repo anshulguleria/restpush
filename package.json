@@ -1,0 +1,14 @@
+{
+  "name": "restifyapi",
+  "version": "0.0.1",
+  "description": "Basic apis using restify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "anshulguleria@ymail.com",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^1.3.6"
+  }
+}

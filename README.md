@@ -1,4 +1,4 @@
 ##TODO
 
-* Upload it to github
-* Add ignore file
+* <s>Upload it to github</s>
+* <s>Add ignore file</s>

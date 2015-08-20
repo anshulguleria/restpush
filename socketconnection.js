@@ -5,6 +5,18 @@ function setup(server) {
     // creating a new socket to accept and emit
     // change events
     io.on('connection', function (socket) {
+        socket.emit('notification', {
+            type: "fromserver", data: {
+                test: 'wassup'
+            }
+        });
+
+        // binding to custom event works only
+        // after connection event or after
+        // successful connection
+        socket.on('notification', function (data) {
+            console.log('received event', data);
+        });
         console.log('socket connection setup');
         socket.on('disconnect', function () {
             console.log('socket disconnected');
@@ -19,12 +31,7 @@ function setup(server) {
             });
         }, 5000);
     });
-
-    return {
-        emit: function (ev) {
-            return io.emit('notification', ev);
-        }
-    };
+    return io;
 }
 
 module.exports = {

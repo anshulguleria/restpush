@@ -3,24 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Testing push notification</title>
+    <style type="text/css">
+        body {
+            background: black;
+            color: gray;
+        }
+    </style>
 </head>
 <body>
     <time></time>
-    <div class="container">Container div</div>
+    <div class="container">
+        Testing socket connection
+        <div class="messages">
+            <div>
+                <label>Recent message: </label>
+                <span id="last_message"></span>
+            </div>
+        </div>
+
+        <div>
+            <!-- add input box here to send message -->
+            <input id="inp_msg" type="text" name="inp_msg">
+            <button id="send_msg_btn" type="button">Send</button>
+        </div>
+    </div>
 
     <script src="/js/socket.io.js"></script>
-    <!-- creating connection -->
-    <script type="text/javascript">
-        var socket = io.connect('http://localhost:8080');
-
-        socket.on('notification', function (data) {
-            console.log('received push notification', data);
-        });
-
-        setTimeout(function () {
-            console.log('sending out notification');
-            socket.emit('notification', { type: 'acknowledgement', data: { test: 'wassup'}});
-        }, 3000);
-    </script>
+    <script src="/js/index.js"></script>
 </body>
 </html>

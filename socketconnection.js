@@ -1,39 +1,72 @@
+// TODO: not acting as singleton
+var socketio = require('socket.io'),
+    clientsCount  = 0,
+    emitEvent = null,
+    broadcastEvent = null,
+    listenEvent = null,
+    pendingListenCallbacks = [];
 function setup(server) {
-    var io = require('socket.io').listen(server);
-
+    var io = socketio.listen(server);
 
     // creating a new socket to accept and emit
     // change events
     io.on('connection', function (socket) {
-        socket.emit('notification', {
-            type: "fromserver", data: {
-                test: 'wassup'
-            }
+        console.log('%s connected', socket.id);
+        clientsCount++;
+
+        socket.on('disconnect', function () {
+            console.log(arguments, 'socket disconnected');
+            clientsCount--;
         });
+
+        emitEvent = function (data) {
+            socket.emit('notification', data);
+        };
+
+        broadcastEvent = function (data) {
+            socket.broadcast.emit('notification', data);
+        };
 
         // binding to custom event works only
         // after connection event or after
         // successful connection
-        socket.on('notification', function (data) {
-            console.log('received event', data);
-        });
-        console.log('socket connection setup');
-        socket.on('disconnect', function () {
-            console.log('socket disconnected');
-        });
+        listenEvent = function (fn) {
+            console.log('connecting event');
+            socket.on('notification', fn);
+        };
 
-
-        // trigger event to check
-        setTimeout(function () {
-            socket.volatile.emit('notification', {
-                type: 'test',
-                data: { text: 'some test data'}
-            });
-        }, 5000);
+        // bind queued listen calls
+        pendingListenCallbacks.forEach(function(callback) {
+            listenEvent(callback);
+        });
     });
     return io;
 }
 
 module.exports = {
-    setup: setup
+    setup: setup,
+    emit: function (data) {
+        console.log('running "emit" hook', clientsCount);
+        if(clientsCount === 0) {
+            console.log('no clients connected');
+        } else {
+            emitEvent(data);
+        }
+    },
+    broadcast: function (data) {
+        console.log('running "emit" hook', clientsCount);
+        if(clientsCount === 0) {
+            console.log('no clients connected');
+        } else {
+            broadcastEvent(data);
+        }
+    },
+    on: function (fn) {
+        console.log('running "on" hook', clientsCount);
+        if(clientsCount === 0) {
+            pendingListenCallbacks.push(fn);
+        } else {
+            listenEvent(fn);
+        }
+    }
 };

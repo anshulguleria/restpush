@@ -8,9 +8,13 @@ var socketio = require('socket.io'),
 function setup(server) {
     var io = socketio.listen(server);
 
+    function emitGlobalEvent () {
+        io.emit('notification', {type: 'global', data: {test: 'wassup'}});
+    }
     // creating a new socket to accept and emit
     // change events
     io.on('connection', function (socket) {
+        emitGlobalEvent();
         console.log('%s connected', socket.id);
         clientsCount++;
 

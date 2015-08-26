@@ -1,12 +1,16 @@
-var restify = require('restify'),
+var http = require('http'),
     sockets = require('./socketconnection'),
     helloRoutes = require('./routes/hello');
 
+function handler (req, res) {
+    res.writeHead(200);
+    res.end("handled the server");
+}
 
-var server = restify.createServer();
+var server = http.createServer(handler);
 
 // tells sockets to setup
-sockets.setup(server.server);
+sockets.setup(server);
 
 sockets.onEvent(function (ev, client) {
     // triggering event from outside
@@ -18,11 +22,7 @@ sockets.onEvent(function (ev, client) {
     }
 });
 
-
-
-// register routes
-helloRoutes.register('/hello', server, sockets);
-
-server.listen(8080, function () {
-    console.log('%s listening at %s', server.name, server.url);
+var port = 8080;
+server.listen(port, function () {
+    console.log('listening at %s', port);
 });

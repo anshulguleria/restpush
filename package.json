@@ -9,6 +9,7 @@
   "author": "anshulguleria@ymail.com",
   "license": "ISC",
   "dependencies": {
+    "restify": "^4.0.0",
     "socket.io": "^1.3.6"
   }
 }

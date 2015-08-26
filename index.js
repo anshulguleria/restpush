@@ -8,12 +8,10 @@ var server = restify.createServer();
 // tells sockets to setup
 sockets.setup(server.server);
 
-sockets.on(function (ev) {
-    console.log('received data on outside', ev);
-
+sockets.onEvent(function (ev, client) {
     // triggering event from outside
     if(ev.data.type !== 'acknowledgement') {
-        sockets.broadcast({
+        sockets.broadcast(client, {
             type: 'test',
             data: { message: ev.data.message }
         });

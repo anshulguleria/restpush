@@ -70,7 +70,6 @@ function setup(server) {
 module.exports = {
     setup: setup,
     emit: function (client, data) {
-        console.log('running "emit" hook', clientsCount);
         if(clientsCount === 0) {
             console.log('no clients connected');
         } else {
@@ -78,7 +77,6 @@ module.exports = {
         }
     },
     broadcast: function (client, data) {
-        console.log('running "broadcast" hook', clientsCount);
         if(clientsCount === 0) {
             console.log('no clients connected');
         } else {
@@ -86,7 +84,6 @@ module.exports = {
         }
     },
     onEvent: function (fn) {
-        console.log('registering for "on" hook');
         // we push only to array and on each "connection" event
         // this array is read and registered on "notification" event
         registeredListeners.push(fn);

@@ -1,6 +1,5 @@
 var http = require('http'),
-    sockets = require('./socketconnection'),
-    helloRoutes = require('./routes/hello');
+    sockets = require('./socketconnection');
 
 function handler (req, res) {
     res.writeHead(200);
@@ -13,6 +12,7 @@ var server = http.createServer(handler);
 sockets.setup(server);
 
 sockets.onEvent(function (ev, client) {
+    console.log('Received data', ev.data);
     // triggering event from outside
     if(ev.data.type !== 'acknowledgement') {
         sockets.broadcast(client, {

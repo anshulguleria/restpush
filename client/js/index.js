@@ -5,12 +5,17 @@
     socket.on('notification', function (ev) {
         console.log('received push notification', ev);
         if(ev.type === 'battery-change') {
-            // TODO: show desktop notification
             batteryStatusEle.querySelector('.battery-level').innerHTML =
                 ev.data.level + "%";
 
             batteryStatusEle.querySelector('.battery-charging').innerHTML =
                 ev.data.isPlugged ? "CHARGING" : "NOTCHARGING";
+
+            var message = ev.data.isPlugged ? "charging" : "NOTCHARGING";
+
+            message += "(" + ev.data.level + "%)";
+
+            window.showNotification(message);
         }
     });
 

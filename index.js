@@ -11,14 +11,11 @@ var server = http.createServer(handler);
 // tells sockets to setup
 sockets.setup(server);
 
-sockets.onEvent(function (ev, client) {
-    console.log('Received data', ev.data);
+sockets.onEvent(function (recevData, client) {
+    console.log('Received data', recevData);
     // triggering event from outside
-    if(ev.data.type !== 'acknowledgement') {
-        sockets.broadcast(client, {
-            type: 'test',
-            data: { message: ev.data.message }
-        });
+    if(recevData.type !== 'acknowledgement') {
+        sockets.broadcast(client, recevData);
     }
 });
 
